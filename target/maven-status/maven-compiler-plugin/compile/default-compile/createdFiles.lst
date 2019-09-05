@@ -1,0 +1,10 @@
+entities\Film.class
+entities\Root.class
+entities\People.class
+entities\Planet.class
+entities\Vehicle.class
+controller\PersonController.class
+entities\PersonInfo.class
+entities\Result.class
+application\Application.class
+services\ApiService.class
