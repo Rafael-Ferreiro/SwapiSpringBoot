@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: gs-rest-service
+    
+url:
+  urlRoot: "https://swapi.co/api/"
