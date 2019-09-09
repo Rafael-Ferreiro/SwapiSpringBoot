@@ -4,3 +4,8 @@ spring:
     
 url:
   urlRoot: "https://swapi.co/api/"
+
+error:
+  text:
+    emptyname: "O campo name esta vacio."
+    notexistname: "Non existe ninguen con ese nome."

@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -38,20 +39,34 @@ public class RestServiceControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
+    
+    @Value("${error.text.emptyname}")
+	private String emptyname;
+	
+	@Value("${error.text.notexistname}")
+	private String notexistname;
 
     @Test
     public void noParamSwapiShouldReturnDefaultMessage() throws Exception {
 
-        this.mockMvc.perform(get("/swapi-proxy/person-info")).andDo(print()).andExpect(status().isNotFound());
+        this.mockMvc.perform(get("/swapi-proxy/person-info")).andDo(print()).andExpect(status().isNotFound())
+        			.andExpect(jsonPath("$.message").value(emptyname));
                 
     }
 
     @Test
     public void paramSwapiShouldReturnTailoredMessage() throws Exception {
 
+        this.mockMvc.perform(get("/swapi-proxy/person-info").param("name", "No existe"))
+                .andDo(print()).andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value(notexistname));
+    }
+    @Test
+    public void paramSwapiShouldReturnOkMessage() throws Exception {
+
         this.mockMvc.perform(get("/swapi-proxy/person-info").param("name", "Luke Skywalker"))
-                .andDo(print()).andExpect(status().isOk());
-               // .andExpect(jsonPath("$.content").value("Non existe ninguén con ese nome."));
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Luke Skywalker"));
     }
 
 }

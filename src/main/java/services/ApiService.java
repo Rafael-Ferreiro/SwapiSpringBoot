@@ -5,8 +5,11 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
-import application.Application;
+
+import config.Application;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,7 +27,9 @@ import entities.Vehicle;
 public class ApiService {
 
 	private static final Logger log = LoggerFactory.getLogger(Application.class);
-	private final String urlRoot = "https://swapi.co/api/";
+	
+	@Value("${url.urlRoot}")
+	private String urlRoot;
 
 	@Autowired
 	private RestTemplate restClient;
@@ -38,6 +43,7 @@ public class ApiService {
 		RestTemplate restTemplate = new RestTemplate();
 		PersonInfo personInfo = new PersonInfo();
 
+		log.debug("llamada a SentToApi:");
 		ResponseEntity<Result> response = restTemplate.exchange(getRoot(), HttpMethod.GET, getHttpEntity(),
 				Result.class);
 		response.getBody().getResults().forEach((p) -> {
